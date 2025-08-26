@@ -1,61 +1,70 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { User } from "lucide-react";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="bg-white shadow-md px-6 py-3 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.svg" alt="Restify Logo" width={36} height={36} />
-          <span className="text-2xl font-bold text-[#1A7F64]">RESTIFY</span>
+    <nav
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 side-rounded-mobile ${
+        scrolled ? "bg-rose-50 shadow-md" : "bg-transparent"
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <Link href="/" className="flex items-center space-x-2">
+          <Image
+            src="/restify_logo.png"
+            alt="Restify Logo"
+            width={45}
+            height={45}
+          />
+          <span
+            className={`text-2xl font-bold ${
+              scrolled ? "text-[#25171a]" : "text-[#C53678]"
+            }`}
+          >
+            RESTIFY
+          </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-4">
-          <Button
-            asChild
-            className="rounded-full bg-transparent text-[#1A7F64] border border-[#1A7F64] hover:bg-[#1A7F64] hover:text-white"
+        {/* Desktop */}
+        <div className="hidden md:flex space-x-4">
+          <Link
+            href="/signin"
+            className="px-4 py-2 rounded-2xl border-2 border-[#C53678] text-[#C53678] hover:bg-white transition"
           >
-            <Link href="/login">Log In</Link>
-          </Button>
-          <Button
-            asChild
-            className="rounded-full bg-[#1A7F64] text-white hover:bg-[#15664F]"
+            Sign In
+          </Link>
+          <Link
+            href="/signup"
+            className="px-4 py-2 rounded-2xl bg-[#C53678] text-white hover:bg-white hover:text-[#C53678] border-2 border-[#C53678] transition"
           >
-            <Link href="/signup">Sign Up</Link>
-          </Button>
+            Sign Up
+          </Link>
         </div>
 
-        <button
-          className="md:hidden p-2 rounded-md text-[#1A7F64]"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <Menu size={24} />
-        </button>
+        {/* Mobile */}
+        <div className="md:hidden">
+          <Link
+            href="/signin"
+            className="p-2 rounded-full bg-[#C53678] text-white hover:bg-white hover:text-[#C53678] border-2 border-[#C53678] transition"
+          >
+            <User size={20} />
+          </Link>
+        </div>
       </div>
-
-      {isOpen && (
-        <div className="md:hidden mt-3 flex flex-col gap-3">
-          <Button
-            asChild
-            className="rounded-full bg-transparent text-[#1A7F64] border border-[#1A7F64] hover:bg-[#1A7F64] hover:text-white"
-          >
-            <Link href="/login">Log In</Link>
-          </Button>
-          <Button
-            asChild
-            className="rounded-full bg-[#1A7F64] text-white hover:bg-[#15664F]"
-          >
-            <Link href="/signup">Sign Up</Link>
-          </Button>
-        </div>
-      )}
     </nav>
   );
 }
