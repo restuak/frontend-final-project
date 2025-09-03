@@ -18,7 +18,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 side-rounded-mobile ${
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300  ${
         scrolled ? "bg-rose-50 shadow-md" : "bg-transparent"
       }`}
     >
@@ -42,13 +42,13 @@ export default function Navbar() {
         {/* Desktop */}
         <div className="hidden md:flex space-x-4">
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="px-4 py-2 rounded-2xl border-2 border-[#C53678] text-[#C53678] hover:bg-white transition"
           >
             Sign In
           </Link>
           <Link
-            href="/signup"
+            href="/auth/signup"
             className="px-4 py-2 rounded-2xl bg-[#C53678] text-white hover:bg-white hover:text-[#C53678] border-2 border-[#C53678] transition"
           >
             Sign Up
@@ -56,13 +56,14 @@ export default function Navbar() {
         </div>
 
         {/* Mobile */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center space-x-2">
           <Link
-            href="/signin"
+            href="/auth/signin"
             className="p-2 rounded-full bg-[#C53678] text-white hover:bg-white hover:text-[#C53678] border-2 border-[#C53678] transition"
           >
             <User size={20} />
           </Link>
+          
         </div>
       </div>
     </nav>
