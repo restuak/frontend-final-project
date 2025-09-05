@@ -29,7 +29,7 @@ export default function PromoCarousel({ promos }: PromoCarouselProps) {
   };
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto mb-12 overflow-hidden rounded-2xl shadow-lg">
+    <div className="relative w-full max-w-5xl mx-auto mb-12 overflow-hidden rounded-2xl shadow-lg mx-35 my-10">
       <AnimatePresence mode="wait">
         <motion.div
           key={promos[current].id}
