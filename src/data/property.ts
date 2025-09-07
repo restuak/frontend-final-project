@@ -1,4 +1,3 @@
-// data/properties.ts
 export interface Property {
   id: number;
   name: string;

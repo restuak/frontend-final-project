@@ -1,72 +1,75 @@
-"use client";
+// "use client";
 
-import { useRouter } from "next/navigation";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+// import { useRouter } from "next/navigation";
+// import Image from "next/image";
+// import {
+//   Carousel,
+//   CarouselContent,
+//   CarouselItem,
+//   CarouselNext,
+//   CarouselPrevious,
+// } from "@/components/ui/carousel";
+// import AutoScroll from "embla-carousel-auto-scroll";
 
-interface PromoCarouselProps {
-  promos: {
-    id: string;
-    image: string;
-    title: string;
-  }[];
-}
+// interface Promo {
+//   id: string;
+//   image: string;
+//   title: string;
+// }
 
-export default function PromoCarousel({ promos }: PromoCarouselProps) {
-  const router = useRouter();
-  const [current, setCurrent] = useState(0);
+// interface PromoCarouselProps {
+//   promos: Promo[];
+// }
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % promos.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, [promos.length]);
+// export default function PromoCarousel({ promos }: PromoCarouselProps) {
+//   const router = useRouter();
 
-  const handleClick = (id: string) => {
-    router.push(`/properties/search?promo=${id}`);
-  };
+//   const handleClick = (id: string) => {
+//     router.push(`/properties/search?promo=${id}`);
+//   };
 
-  return (
-    <div className="relative w-full max-w-5xl mx-auto mb-12 overflow-hidden rounded-2xl shadow-lg mx-35 my-10">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={promos[current].id}
-          initial={{ opacity: 0, scale: 1.05 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.95 }}
-          transition={{ duration: 0.6 }}
-          className="relative w-full h-64 md:h-96 cursor-pointer"
-          onClick={() => handleClick(promos[current].id)}
-        >
-          <Image
-            src={promos[current].image}
-            alt={promos[current].title}
-            fill
-            priority
-            className="object-cover"
-          />
-          <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-            <h2 className="text-white text-2xl md:text-4xl font-bold drop-shadow-lg">
-              {promos[current].title}
-            </h2>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+//   return (
+//     <div className="relative w-full max-w-6xl mx-auto mb-12">
+//       <Carousel
+//         opts={{
+//           align: "start",
+//           loop: true,
+//         }}
+//         plugins={[
+//           AutoScroll({
+//             speed: 1,
+//             stopOnInteraction: true,
+//           }),
+//         ]}
+//       >
+//         <CarouselContent>
+//           {promos.map((promo) => (
+//             <CarouselItem
+//               key={promo.id}
+//               className="basis-full sm:basis-1/2 md:basis-1/3 cursor-pointer"
+//               onClick={() => handleClick(promo.id)}
+//             >
+//               <div className="relative w-full h-64 md:h-80 rounded-2xl overflow-hidden shadow-lg">
+//                 <Image
+//                   src={promo.image}
+//                   alt={promo.title}
+//                   fill
+//                   className="object-cover"
+//                 />
+//                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+//                   <h2 className="text-white text-lg md:text-2xl font-bold drop-shadow-lg px-2 text-center">
+//                     {promo.title}
+//                   </h2>
+//                 </div>
+//               </div>
+//             </CarouselItem>
+//           ))}
+//         </CarouselContent>
 
-     
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-        {promos.map((_, i) => (
-          <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className={`w-3 h-3 rounded-full ${
-              current === i ? "bg-[#FF5841]" : "bg-white/60"
-            }`}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
+//         {/* tombol navigasi, tampil hanya di desktop */}
+//         <CarouselPrevious className="hidden md:flex" />
+//         <CarouselNext className="hidden md:flex" />
+//       </Carousel>
+//     </div>
+//   );
+// }

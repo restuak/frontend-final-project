@@ -3,27 +3,15 @@ import CityTabs from "@/components/listing/cityTab";
 import PropertyFilter from "@/components/listing/propertyFilter";
 import PropertyListing from "@/components/listing/propertyListing";
 import PromoCarousel from "@/components/promo/promoCarousel";
+import WhyRestify from "@/components/whyRestify";
+import PartnerPayment from "@/components/partnerPayment";
+import PartnerTenant from "@/components/partnerTenant";
+import PromoPage from "@/components/promo/promoPage";
 
 
 
 export default function HomeView() {
-  const promos = [
-    {
-      id: "summer",
-      image: "/img/prom/1.webp",
-      title: "Promo Summer Bali",
-    },
-    {
-      id: "weekend",
-      image: "/img/prom/2.webp",
-      title: "Weekend Hemat Jakarta",
-    },
-    {
-      id: "luxury",
-      image: "/img/prom/3.webp",
-      title: "Luxury Deals Bandung",
-    },
-  ];
+  
   return (
     <main>
       <Hero />
@@ -35,11 +23,14 @@ export default function HomeView() {
           { name: "Jakarta", image: "/img/city/jakarta.jpg" },
         ]}
       />
-      <PromoCarousel promos={promos} />
+   
       <PropertyListing city="all" type="all" />
       <PropertyFilter
         types={["Apartment", "House", "Hotel", "Villa", "Cottage"]}
       />
+      <WhyRestify />
+      <PartnerTenant />
+      <PartnerPayment />
     </main>
   );
 }

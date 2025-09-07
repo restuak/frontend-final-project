@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -128,4 +130,17 @@
 .side-rounded-mobile {
   border-top-left-radius: 10% 15%;
   border-top-right-radius: 10% 15%;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
 }
