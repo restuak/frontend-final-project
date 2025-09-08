@@ -44,8 +44,7 @@ export default function Hero() {
       </div>
 
       {/* MOBILE VIEW */}
-      <div className="md:hidden px-4 py-6">
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+      <div className="md:hidden ">
          
           <div className="relative h-65 w-full overflow-hidden">
             <img
@@ -65,7 +64,6 @@ export default function Hero() {
             <SearchForm />
           </div>
         </div>
-      </div>
     </section>
   );
 }

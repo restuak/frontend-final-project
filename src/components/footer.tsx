@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaFacebookF, FaInstagram, FaTwitter  } from "react-icons/fa";
+import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export default function Footer() {
   return (
@@ -22,21 +22,21 @@ export default function Footer() {
             className="mb-3"
           />
           <p className="max-w-xs">
-            Find and book your perfect stay at the best price.
+            Temukan dan pesan penginapan terbaik dengan harga terbaik.
           </p>
         </div>
 
         {/* Links Section */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full text-center md:text-left">
-          {/* Company */}
-          <div>
-            <h3 className="font-semibold mb-3">Company</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full text-center justify-center">
+          {/* Perusahaan */}
+          <div className="flex flex-col items-center">
+            <h3 className="font-semibold mb-3">PERUSAHAAN</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#">About Us</Link>
+                <Link href="#">Tentang Kami</Link>
               </li>
               <li>
-                <Link href="#">Careers</Link>
+                <Link href="#">Karier</Link>
               </li>
               <li>
                 <Link href="#">Blog</Link>
@@ -44,26 +44,26 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Support */}
-          <div>
-            <h3 className="font-semibold mb-3">Support</h3>
+          {/* Dukungan */}
+          <div className="flex flex-col items-center">
+            <h3 className="font-semibold mb-3">DUKUNGAN</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#">Help Center</Link>
+                <Link href="#">Pusat Bantuan</Link>
               </li>
               <li>
-                <Link href="#">Terms & Conditions</Link>
+                <Link href="#">Syarat & Ketentuan</Link>
               </li>
               <li>
-                <Link href="#">Privacy Policy</Link>
+                <Link href="#">Kebijakan Privasi</Link>
               </li>
             </ul>
           </div>
 
-          {/* Follow Us */}
-          <div>
-            <h3 className="font-semibold mb-3">Follow Us</h3>
-            <div className="flex justify-center md:justify-start gap-4">
+          {/* Ikuti Kami */}
+          <div className="flex flex-col items-center">
+            <h3 className="font-semibold mb-3">IKUTI KAMI</h3>
+            <div className="flex justify-center gap-4">
               <Link href="#">
                 <FaFacebookF className="text-lg hover:text-gray-300" />
               </Link>
@@ -79,7 +79,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="text-center py-6 border-t border-[#ffffff] mt-8 w-full text-xs">
-          © {new Date().getFullYear()} Restify. All rights reserved.
+          © {new Date().getFullYear()} RESTIFY. All Right Reserved.
         </div>
       </div>
     </footer>
