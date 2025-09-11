@@ -18,7 +18,7 @@ export default function CityTabs({ cities }: CityTabsProps) {
   const city = searchParams.get("city") || "all";
 
   return (
-    <div className=" grid grid-cols-2 md:grid-cols-4 gap-6 mb-6 mx-5 md:mx-10 md:mt-10">
+    <div className=" grid grid-cols-2 md:grid-cols-4 gap-6 mb-6 mx-5 md:mx-60 md:mt-10">
       {cities.map((c) => (
         <div
           key={c.name}

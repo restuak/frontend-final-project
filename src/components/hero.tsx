@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import SearchForm from "../features/search/searchform";
+import SearchForm from "./search/searchform";
 export default function Hero() {
   const images = [
     "https://res.cloudinary.com/demo/image/upload/w_1600,h_900,c_fill/beach.jpg",
