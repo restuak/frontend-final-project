@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
-import { useSearchStore } from "@/store/search";
+import { useSearchStore } from "@/store/search.store";
 import { DateRange } from "react-day-picker";
 
 export default function DatePicker({

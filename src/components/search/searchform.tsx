@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { useSearchStore } from "@/store/search";
+import { useSearchStore } from "@/store/search.store";
 
 import LocationPicker from "./location";
 import DatePicker from "./date";

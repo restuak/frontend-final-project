@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useSearchStore } from "@/store/search";
+import { useSearchStore } from "@/store/search.store";
 
 export default function LocationPicker({
   open,

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { SearchState } from "../interface/searchstate";
+import { SearchState } from "../interface/searchstate.types";
 
 
 export const useSearchStore = create<SearchState>((set) => ({

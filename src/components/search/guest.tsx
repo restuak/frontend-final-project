@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useSearchStore } from "@/store/search";
+import { useSearchStore } from "@/store/search.store";
 
 export default function GuestPicker({
   open,

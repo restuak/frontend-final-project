@@ -30,6 +30,5 @@ export interface AuthState {
   error: string | null;
   signIn: (payload: ILoginParam) => Promise<void>;
   signUp: (payload: IRegisterParam) => Promise<void>;
-  completeProfile: (payload: Omit<IRegisterParam, "email">) => Promise<void>;
   signOut: () => void;
 }

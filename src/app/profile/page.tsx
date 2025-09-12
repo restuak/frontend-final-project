@@ -1,9 +1,9 @@
-import ProfileView from "@/view/profile/page";
+// import ProfileView from "@/view/profile/page";
 
-export default function ProfilePage() {
-  return (
-    <>
-      <ProfileView />
-    </>
-  );
-}
+// export default function ProfilePage() {
+//   return (
+//     <>
+//       <ProfileView />
+//     </>
+//   );
+// }

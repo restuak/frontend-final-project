@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Eye, EyeOff, Mail, Lock, Loader2 } from "lucide-react";
-import useAuthStore from "@/store/authstore";
+import useAuthStore from "@/store/auth.store";
 
 export default function SignInPageView() {
   const [showPass, setShowPass] = useState(false);

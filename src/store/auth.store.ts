@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import axios, { AxiosError } from "axios";
-import { ILoginParam, IRegisterParam, IJwtPayload } from "@/interface/auth";
+import { ILoginParam, IRegisterParam, IJwtPayload } from "@/interface/auth.types";
 import { BE_URL } from "@/configs/config";
 
 interface AuthState {

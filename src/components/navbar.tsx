@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { User, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import useAuthStore from "@/store/authstore";
+import useAuthStore from "@/store/auth.store";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
