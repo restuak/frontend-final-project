@@ -4,9 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
-
 const poppins = Poppins({
-  subsets: ["latin"], 
+  subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   variable: "--font-poppins",
 });
@@ -35,4 +34,3 @@ export default function RootLayout({
     </html>
   );
 }
-
