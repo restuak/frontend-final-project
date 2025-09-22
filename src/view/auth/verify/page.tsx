@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { passwordSchema, PasswordInput } from "@/lib/passvalidation";
 import axios from "axios";
+import { BE_URL } from "@/configs/config";
 
 export default function VerifyEmailView() {
   const searchParams = useSearchParams();
@@ -38,7 +39,7 @@ export default function VerifyEmailView() {
     const verifyEmail = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BE_URL}/api/auth/verify`,
+          `${BE_URL}/api/auth/verify`,
           { params: { token } }
         );
 

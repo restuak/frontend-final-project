@@ -7,7 +7,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { payments } from "../data/payment";
+import { payments } from "../../data/payment";
 
 export default function PartnerPayment() {
   return (

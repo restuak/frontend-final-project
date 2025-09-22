@@ -12,6 +12,7 @@ import {
   Building2,
 } from "lucide-react";
 import axios from "axios";
+import { BE_URL } from "@/configs/config";
 
 export default function SignUpPageView() {
   const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ export default function SignUpPageView() {
 
     try {
       setLoading(true);
-      await axios.post(`http://localhost:8080/api/auth/register`, {
+      await axios.post(`${BE_URL}/api/auth/register`, {
         email,
         role, 
       });

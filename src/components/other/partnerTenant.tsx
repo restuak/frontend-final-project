@@ -7,7 +7,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import AutoScroll from "embla-carousel-auto-scroll";
-import { tenants } from "../data/tenants";
+import { tenants } from "@/data/tenants";
 
 export default function PartnerTenant() {
   return (
