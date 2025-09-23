@@ -3,19 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { BE_URL } from "@/configs/config";
-
-interface Props {
-  category: string;
-  setCategory: (val: string) => void;
-  maxPrice: number;
-  setMaxPrice: (val: number) => void;
-  facilities: string[];
-  setFacilities: (val: string[]) => void;
-  resetFilters: () => void;
-  MAX_PRICE: number;
-  city: string;
-  setCity: (val: string) => void;
-}
+import { CityPropsParams } from "@/interface/property.types";
 
 const CATEGORY_OPTIONS = [
   "all",
@@ -26,11 +14,6 @@ const CATEGORY_OPTIONS = [
   "guesthouse",
 ];
 const FACILITY_OPTIONS = ["wifi", "pool", "parking", "ac"];
-const BASE_URL = "http://localhost:8080";
-
-interface Property {
-  city: string;
-}
 
 export default function SearchFilters({
   category,
@@ -43,11 +26,11 @@ export default function SearchFilters({
   MAX_PRICE,
   city,
   setCity,
-}: Props) {
+}: CityPropsParams) {
   const [cityOptions, setCityOptions] = useState<string[]>([]);
   const [suggestions, setSuggestions] = useState<string[]>([]);
 
-  // fetch semua properties lalu ambil city unik
+  // fetch semua properties lalu ambil city
   useEffect(() => {
     const fetchCities = async () => {
       try {
@@ -55,12 +38,10 @@ export default function SearchFilters({
           params: { take: 500 },
         });
 
-        const props: Property[] = data?.data || data?.items || [];
+        const props: CityPropsParams[] = data?.data || data?.items || [];
         const uniqueCities: string[] = Array.from(
           new Set(
-            props
-              .map((p) => p.city)
-              .filter((c): c is string => Boolean(c))
+            props.map((p) => p.city).filter((c): c is string => Boolean(c))
           )
         );
 

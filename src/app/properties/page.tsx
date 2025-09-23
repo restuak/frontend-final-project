@@ -44,7 +44,7 @@ export default function PropertiesPage() {
     router.push(`/properties?${params.toString()}`);
   };
 
-  // saat load pertama kali → baca query dari URL
+  // saat load pertama kali baca query dari URL
   useEffect(() => {
     if (searchParams.get("city")) setCity(searchParams.get("city")!);
     if (searchParams.get("category"))

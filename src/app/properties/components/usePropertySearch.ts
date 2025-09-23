@@ -4,19 +4,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import { BE_URL } from "@/configs/config";
+import { PropsParams } from "@/interface/property.types";
 
-export interface Property {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-  city: string;
-  category: string;
-  facilities: string[];
-  imageUrl: string | null;
-  price: number;
-  rating: number;
-}
 
 const PER_PAGE = 5;
 const MAX_PRICE = 2_500_000;
@@ -53,7 +42,7 @@ export function useSearchProperties() {
   );
 
   // Data
-  const [properties, setProperties] = useState<Property[]>([]);
+  const [properties, setProperties] = useState<PropsParams[]>([]);
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -77,7 +66,7 @@ export function useSearchProperties() {
         params,
       });
 
-      const results: Property[] = data?.items ?? data?.data ?? [];
+      const results: PropsParams [] = data?.items ?? data?.data ?? [];
       setProperties(results);
       setTotalPages(Math.ceil((data?.total ?? results.length) / PER_PAGE));
     } catch (err) {
