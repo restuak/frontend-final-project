@@ -15,11 +15,11 @@ interface AuthState {
   loading: boolean;
   error: string | null;
 
-  // auth flows
+
   signIn: (payload: ILoginParam) => Promise<void>;
-  signUp: (payload: IRegisterParam) => Promise<void>; // /auth/register (kirim email verif)
-  verifyEmail: (token: string) => Promise<void>; // /user/verify-email/confirm?token=
-  restoreSession: () => Promise<void>; // GET /user/profile (pakai token yang tersimpan)
+  signUp: (payload: IRegisterParam) => Promise<void>; 
+  verifyEmail: (token: string) => Promise<void>; 
+  restoreSession: () => Promise<void>;
   signOut: () => void;
 }
 
@@ -43,13 +43,11 @@ const useAuthStore = create<AuthState>()(
       signIn: async ({ role, email, password }) => {
         set({ loading: true, error: null });
         try {
-          // Endpoint dipisah sesuai role:
           const path =
             role === "TENANT" ? "api/auth/tenant-login" : "api/auth/user-login";
 
           const res = await axios.post(`${BE_URL}${path}`, { email, password });
 
-          // BE mengembalikan { data: { userPayload|tenantPayload, token } }
           const data = res.data?.data || {};
           const token: string | undefined = data.token;
           const payload: IJwtPayload | undefined =
@@ -59,7 +57,6 @@ const useAuthStore = create<AuthState>()(
             throw new Error("Invalid login response");
           }
 
-          // simpan & set header axios
           set({ user: payload, token });
           setAxiosAuthHeader(token);
         } catch (err) {
@@ -71,7 +68,7 @@ const useAuthStore = create<AuthState>()(
               "Login gagal",
           });
           setAxiosAuthHeader(null);
-          throw err; // biar caller bisa handle toast dsb
+          throw err;
         } finally {
           set({ loading: false });
         }
@@ -81,9 +78,7 @@ const useAuthStore = create<AuthState>()(
       signUp: async (payload) => {
         set({ loading: true, error: null });
         try {
-          // BE: POST /auth/register { email }
           await axios.post(`${BE_URL}api/auth/register`, payload);
-          // Tidak auto-login; FE cukup tampilkan pesan "cek email".
         } catch (err) {
           const error = err as AxiosError<any>;
           set({
@@ -99,15 +94,16 @@ const useAuthStore = create<AuthState>()(
       },
 
       // VERIFIKASI EMAIL (resend/confirm alur user, di sini untuk CONFIRM)
-      // BE: GET /user/verify-email/confirm?token=...
       verifyEmail: async (verifyToken: string) => {
         set({ loading: true, error: null });
         try {
-          const res = await axios.get(`${BE_URL}api/user/verify-email/confirm`, {
-            params: { token: verifyToken },
-          });
+          const res = await axios.get(
+            `${BE_URL}api/user/verify-email/confirm`,
+            {
+              params: { token: verifyToken },
+            }
+          );
 
-          // setelah konfirmasi, baiknya refresh profil
           const token = get().token;
           if (token) {
             setAxiosAuthHeader(token);
@@ -128,8 +124,6 @@ const useAuthStore = create<AuthState>()(
         }
       },
 
-      // RESTORE SESSION (ambil profil pakai token tersimpan)
-      // BE: GET /user/profile
       restoreSession: async () => {
         const token = get().token;
         if (!token) return;
@@ -138,7 +132,6 @@ const useAuthStore = create<AuthState>()(
           const res = await axios.get(`${BE_URL}api/user/profile`);
           set({ user: res.data?.data || null });
         } catch (err) {
-          // token invalid/expired → bersihkan session
           set({ user: null, token: null });
           setAxiosAuthHeader(null);
         }
@@ -158,10 +151,8 @@ const useAuthStore = create<AuthState>()(
         token: state.token,
       }),
       onRehydrateStorage: () => (state) => {
-        // ketika rehydrate, set header axios lalu coba restore profil
         const token = state?.token;
         setAxiosAuthHeader(token);
-        // optionally fetch me (non-blocking)
         state?.restoreSession?.();
       },
     }

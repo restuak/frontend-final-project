@@ -8,8 +8,8 @@ import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { PropertyParams } from "@/interface/property.types";
 
 const BASE_URL = "http://localhost:8080";
-const TAKE = 50; // ambil banyak supaya bisa ekstrak kategori
-const VISIBLE_COUNT = 10; // tampil per page
+const TAKE = 50; 
+const VISIBLE_COUNT = 10; 
 
 export default function PropertiesShowcase() {
   const [properties, setProperties] = useState<PropertyParams[]>([]);
@@ -59,7 +59,7 @@ export default function PropertiesShowcase() {
 
   useEffect(() => {
     fetchProperties({ category, city: city ?? undefined });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
   }, [category, city]);
 
   // auto slide tiap 6 detik
@@ -77,7 +77,7 @@ export default function PropertiesShowcase() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async () => {
-          const userCity = "Jakarta"; // mock reverse geocoding
+          const userCity = "Jakarta";
           setCity(userCity);
           fetchProperties({ city: userCity, category });
         },

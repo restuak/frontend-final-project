@@ -8,9 +8,6 @@ import axios from "axios";
 import { BE_URL } from "@/configs/config";
 import { SearcPropsParams } from "@/interface/property.types";
 
-
-
-
 export default function SearchBar({ onSearch }: SearcPropsParams) {
   const [location, setLocation] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState<string[]>([]);
