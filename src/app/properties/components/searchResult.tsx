@@ -2,17 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Property } from "./usePropertySearch";
+import { SearchPropsResult } from "@/interface/property.types";
 
-interface Props {
-  loading: boolean;
-  properties: Property[];
-  category: string;
-  location: string;
-  currentPage: number;
-  setCurrentPage: (page: number) => void;
-  totalPages: number;
-}
 
 export default function SearchResults({
   loading,
@@ -22,7 +13,7 @@ export default function SearchResults({
   currentPage,
   setCurrentPage,
   totalPages,
-}: Props) {
+}: SearchPropsResult) {
   return (
     <main className="col-span-3 space-y-6">
       <div>
@@ -58,9 +49,7 @@ export default function SearchResults({
               <div className="flex-1 space-y-1">
                 <h2 className="font-bold text-lg">{p.name}</h2>
                 <p className="text-sm text-gray-500">{p.city}</p>
-                <p className="text-xs text-gray-400 italic">
-                  {p.category}
-                </p>
+                <p className="text-xs text-gray-400 italic">{p.category}</p>
                 <p className="text-xs text-yellow-500">
                   ⭐ {p.rating?.toFixed(1) ?? "0.0"} / 5
                 </p>

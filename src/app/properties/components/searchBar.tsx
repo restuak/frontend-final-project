@@ -6,18 +6,9 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import axios from "axios";
 import { BE_URL } from "@/configs/config";
+import { SearcPropsParams } from "@/interface/property.types";
 
-
-
-interface Props {
-  onSearch: (params: {
-    location?: string;
-    duration?: { startDate?: Date; endDate?: Date };
-    guests?: { adults: number; children: number };
-  }) => void;
-}
-
-export default function SearchBar({ onSearch }: Props) {
+export default function SearchBar({ onSearch }: SearcPropsParams) {
   const [location, setLocation] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState<string[]>([]);
   const [allCities, setAllCities] = useState<string[]>([]);
@@ -37,9 +28,7 @@ export default function SearchBar({ onSearch }: Props) {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const { data } = await axios.get(
-          `${BE_URL}/api/properties/`
-        );
+        const { data } = await axios.get(`${BE_URL}/api/properties/`);
         if (data?.success && Array.isArray(data.data)) {
           const rawCities: string[] = data.data
             .map((p: any) => p.city)

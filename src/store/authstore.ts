@@ -2,7 +2,11 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 import axios, { AxiosError } from "axios";
-import { ILoginParam, IRegisterParam, IJwtPayload } from "@/interface/auth";
+import {
+  ILoginParam,
+  IRegisterParam,
+  IJwtPayload,
+} from "@/interface/auth.types";
 import { BE_URL } from "@/configs/config";
 
 interface AuthState {
@@ -11,100 +15,132 @@ interface AuthState {
   loading: boolean;
   error: string | null;
 
+
   signIn: (payload: ILoginParam) => Promise<void>;
-  signUp: (payload: IRegisterParam) => Promise<void>;
-  verifyEmail: (token: string) => Promise<void>;
+  signUp: (payload: IRegisterParam) => Promise<void>; 
+  verifyEmail: (token: string) => Promise<void>; 
+  restoreSession: () => Promise<void>;
   signOut: () => void;
 }
 
+const setAxiosAuthHeader = (token?: string | null) => {
+  if (token) {
+    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  } else {
+    delete axios.defaults.headers.common["Authorization"];
+  }
+};
+
 const useAuthStore = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       token: null,
       loading: false,
       error: null,
 
-      // LOGIN
+      // LOGIN (USER / TENANT)
       signIn: async ({ role, email, password }) => {
         set({ loading: true, error: null });
         try {
-          const res = await axios.post(`${BE_URL}/api/auth/login`, {
-            role,
-            email,
-            password,
-          });
+          const path =
+            role === "TENANT" ? "api/auth/tenant-login" : "api/auth/user-login";
 
-          console.log("LOGIN RESPONSE:", res.data);
+          const res = await axios.post(`${BE_URL}${path}`, { email, password });
 
-          set({
-            user: res.data.data?.user || null,
-            token: res.data.data?.token || null,
-          });
+          const data = res.data?.data || {};
+          const token: string | undefined = data.token;
+          const payload: IJwtPayload | undefined =
+            data.userPayload || data.tenantPayload;
+
+          if (!token || !payload) {
+            throw new Error("Invalid login response");
+          }
+
+          set({ user: payload, token });
+          setAxiosAuthHeader(token);
         } catch (err) {
           const error = err as AxiosError<any>;
-          console.error("LOGIN ERROR:", error.response?.data || error.message);
           set({
-            error: error.response?.data?.message || "Login gagal",
+            error:
+              (error.response?.data as any)?.message ||
+              error.message ||
+              "Login gagal",
           });
+          setAxiosAuthHeader(null);
+          throw err;
         } finally {
           set({ loading: false });
         }
       },
 
-      // REGISTER
+      // REGISTER AWAL (kirim email verifikasi pendaftaran)
       signUp: async (payload) => {
         set({ loading: true, error: null });
         try {
-          const res = await axios.post(`${BE_URL}/api/auth/register`, payload);
-          console.log("REGISTER RESPONSE:", res.data);
-
-          // Register tidak auto-login, hanya simpan info user sementara
-          set({
-            user: res.data.user || null,
-          });
+          await axios.post(`${BE_URL}api/auth/register`, payload);
         } catch (err) {
           const error = err as AxiosError<any>;
-          console.error(
-            "REGISTER ERROR:",
-            error.response?.data || error.message
-          );
           set({
-            error: error.response?.data?.message || "Register gagal",
+            error:
+              (error.response?.data as any)?.message ||
+              error.message ||
+              "Register gagal",
           });
+          throw err;
         } finally {
           set({ loading: false });
         }
       },
 
-      // VERIFY EMAIL
-      verifyEmail: async (verifyToken) => {
+      // VERIFIKASI EMAIL (resend/confirm alur user, di sini untuk CONFIRM)
+      verifyEmail: async (verifyToken: string) => {
         set({ loading: true, error: null });
         try {
           const res = await axios.get(
-            `${BE_URL}/api/auth/verify?token=${verifyToken}`
+            `${BE_URL}api/user/verify-email/confirm`,
+            {
+              params: { token: verifyToken },
+            }
           );
-          console.log("VERIFY RESPONSE:", res.data);
 
-          set({
-            user: res.data.user || null,
-            token: res.data.token || null,
-          });
+          const token = get().token;
+          if (token) {
+            setAxiosAuthHeader(token);
+            const me = await axios.get(`${BE_URL}api/user/profile`);
+            set({ user: me.data?.data || null });
+          }
         } catch (err) {
           const error = err as AxiosError<any>;
-          console.error("VERIFY ERROR:", error.response?.data || error.message);
           set({
-            error: error.response?.data?.message || "Verifikasi email gagal",
+            error:
+              (error.response?.data as any)?.message ||
+              error.message ||
+              "Verifikasi email gagal",
           });
+          throw err;
         } finally {
           set({ loading: false });
+        }
+      },
+
+      restoreSession: async () => {
+        const token = get().token;
+        if (!token) return;
+        try {
+          setAxiosAuthHeader(token);
+          const res = await axios.get(`${BE_URL}api/user/profile`);
+          set({ user: res.data?.data || null });
+        } catch (err) {
+          set({ user: null, token: null });
+          setAxiosAuthHeader(null);
         }
       },
 
       // LOGOUT
       signOut: () => {
-        console.log("LOGOUT CALLED");
-        set({ user: null, token: null });
+        set({ user: null, token: null, error: null });
+        setAxiosAuthHeader(null);
       },
     }),
     {
@@ -114,6 +150,11 @@ const useAuthStore = create<AuthState>()(
         user: state.user,
         token: state.token,
       }),
+      onRehydrateStorage: () => (state) => {
+        const token = state?.token;
+        setAxiosAuthHeader(token);
+        state?.restoreSession?.();
+      },
     }
   )
 );
