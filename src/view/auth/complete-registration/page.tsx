@@ -5,13 +5,15 @@ import { useSearchParams, useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Loader2, Lock, UserRound } from "lucide-react";
+import { Loader2, Lock, UserRound, Building2, CheckCircle } from "lucide-react";
 import { BE_URL } from "@/configs/config";
 import { passwordSchema, type PasswordInput } from "@/lib/passvalidation";
+import { UserRole } from "@/interface/auth.types";
 
 type FormState = {
   first_name: string;
   last_name: string;
+  role: UserRole;
 } & PasswordInput;
 
 export default function CompleteRegistrationView() {
@@ -24,6 +26,7 @@ export default function CompleteRegistrationView() {
     last_name: "",
     password: "",
     confirmPassword: "",
+    role: UserRole.USER, 
   });
 
   const [errors, setErrors] = useState<
@@ -36,18 +39,16 @@ export default function CompleteRegistrationView() {
 
   useEffect(() => {
     if (!token) {
-      setBootError(
-        "Token tidak ditemukan. Silakan buka tautan dari email Anda."
-      );
+      setBootError("Token not found. Please open the link from your email.");
     }
   }, [token]);
 
   const validate = (): boolean => {
     const fieldErrs: Partial<Record<keyof FormState, string>> = {};
     if (!form.first_name.trim())
-      fieldErrs.first_name = "Nama depan wajib diisi.";
-    if (!form.last_name.trim())
-      fieldErrs.last_name = "Nama belakang wajib diisi.";
+      fieldErrs.first_name = "First name is required.";
+    if (!form.last_name.trim()) fieldErrs.last_name = "Last name is required.";
+    if (!form.role) fieldErrs.role = "Please select account type.";
 
     const pass = passwordSchema.safeParse({
       password: form.password,
@@ -71,7 +72,7 @@ export default function CompleteRegistrationView() {
 
     if (!validate()) return;
     if (!token) {
-      setBootError("Token tidak ditemukan.");
+      setBootError("Token not found.");
       return;
     }
 
@@ -82,19 +83,19 @@ export default function CompleteRegistrationView() {
         first_name: form.first_name.trim(),
         last_name: form.last_name.trim(),
         password: form.password,
+        role: form.role,
       };
 
-      // ⬅️ sesuai permintaan: endpoint baru
-      await axios.post(`${BE_URL}api/auth/complete`, payload);
+      await axios.post(`${BE_URL}api/auth/complete-registration`, payload);
 
-      setApiSuccess("regis succes");
-      setTimeout(() => router.push("/auth/signin"), 900);
+      setApiSuccess("Registration completed successfully.");
+      setTimeout(() => router.push("/auth/signin"), 1000);
     } catch (err) {
       const e = err as AxiosError<any>;
       setApiError(
         e.response?.data?.message ||
           e.message ||
-          "Gagal menyelesaikan registrasi."
+          "Failed to complete registration."
       );
     } finally {
       setLoading(false);
@@ -102,13 +103,13 @@ export default function CompleteRegistrationView() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FFFAFA] px-4">
+    <div className="min-h-screen flex items-center justify-center bg-[#FFFAFA] px-4 mt-24">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl">
         <h1 className="text-2xl font-bold text-[#25171A] mb-2 text-center">
           Complete Registration
         </h1>
         <p className="text-sm text-[#4A3B3F] text-center mb-6">
-          Lengkapi data di bawah untuk mengaktifkan akun Anda.
+          Fill in the details below to activate your account.
         </p>
 
         {bootError && (
@@ -122,12 +123,53 @@ export default function CompleteRegistrationView() {
           </div>
         )}
         {apiSuccess && (
-          <div className="mb-4 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+          <div className="mb-4 rounded-lg border border-emerald-100 bg-emerald-50 px-3 py-2 text-sm text-emerald-700 flex items-center gap-2">
+            <CheckCircle className="w-4 h-4" />
             {apiSuccess}
           </div>
         )}
 
         <form className="space-y-5" onSubmit={onSubmit}>
+          {/* ACCOUNT TYPE */}
+          <div>
+            <label className="block text-sm text-center font-medium text-[#25171A] mb-1">
+              Choose account type
+            </label>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() =>
+                  setForm((p) => ({ ...p, role: "USER" as UserRole }))
+                }
+                className={`flex-1 flex items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm transition ${
+                  form.role === "USER"
+                    ? "bg-[#C53678] text-white border-[#C53678]"
+                    : "bg-white text-[#25171A] border-[#F2E3E7] hover:border-[#C53678]"
+                }`}
+              >
+                <UserRound className="w-4 h-4" />
+                User
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setForm((p) => ({ ...p, role: "TENANT" as UserRole }))
+                }
+                className={`flex-1 flex items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm transition ${
+                  form.role === "TENANT"
+                    ? "bg-[#C53678] text-white border-[#C53678]"
+                    : "bg-white text-[#25171A] border-[#F2E3E7] hover:border-[#C53678]"
+                }`}
+              >
+                <Building2 className="w-4 h-4" />
+                Owner Property
+              </button>
+            </div>
+            {errors.role && (
+              <p className="text-xs text-rose-600 mt-1">{errors.role}</p>
+            )}
+          </div>
+
           {/* FIRST NAME */}
           <div className="relative">
             <UserRound className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
@@ -199,8 +241,8 @@ export default function CompleteRegistrationView() {
           </div>
 
           <p className="text-xs text-gray-500 -mt-2">
-            Password 6–12 karakter, tanpa spasi, wajib ada huruf besar, kecil,
-            angka, dan simbol.
+            Password must be 6–12 characters, no spaces, must include uppercase,
+            lowercase, numbers, and symbols.
           </p>
 
           <Button

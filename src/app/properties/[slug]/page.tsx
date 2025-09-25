@@ -50,7 +50,7 @@ export default function PropertyDetailPage() {
     if (!slug) return;
     const fetchDetail = async () => {
       try {
-        const res = await fetch(`${BE_URL}/api/properties/${slug}`);
+        const res = await fetch(`${BE_URL}api/properties/${slug}`);
         const data = await res.json();
         setProperty(data.data);
       } catch (err) {

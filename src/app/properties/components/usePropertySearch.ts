@@ -62,7 +62,7 @@ export function useSearchProperties() {
       if (endDate) params.endDate = endDate;
       if (guests) params.guests = guests;
 
-      const { data } = await axios.get(`${BE_URL}/api/properties/`, {
+      const { data } = await axios.get(`${BE_URL}api/properties/`, {
         params,
       });
 

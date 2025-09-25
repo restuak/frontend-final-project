@@ -34,7 +34,7 @@ export default function SearchFilters({
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const { data } = await axios.get(`${BE_URL}/api/properties/`, {
+        const { data } = await axios.get(`${BE_URL}api/properties/`, {
           params: { take: 500 },
         });
 

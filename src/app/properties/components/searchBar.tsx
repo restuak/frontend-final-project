@@ -28,7 +28,7 @@ export default function SearchBar({ onSearch }: SearcPropsParams) {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const { data } = await axios.get(`${BE_URL}/api/properties/`);
+        const { data } = await axios.get(`${BE_URL}api/properties/`);
         if (data?.success && Array.isArray(data.data)) {
           const rawCities: string[] = data.data
             .map((p: any) => p.city)

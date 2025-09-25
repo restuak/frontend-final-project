@@ -6,8 +6,8 @@ import Image from "next/image";
 import axios from "axios";
 import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
 import { PropertyParams } from "@/interface/property.types";
+import { BE_URL } from "@/configs/config";
 
-const BASE_URL = "http://localhost:8080";
 const TAKE = 50; 
 const VISIBLE_COUNT = 10; 
 
@@ -30,7 +30,7 @@ export default function PropertiesShowcase() {
       if (opts?.category && opts.category !== "all")
         params.category = opts.category;
 
-      const { data } = await axios.get(`${BASE_URL}/api/properties`, {
+      const { data } = await axios.get(`${BE_URL}api/properties`, {
         params,
         headers: { "Cache-Control": "no-store" },
       });

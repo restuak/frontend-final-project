@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
+import { BE_URL } from "@/configs/config";
 
 interface Property {
   id: string;
@@ -18,8 +19,6 @@ interface City {
   count: number;
 }
 
-const BASE_URL = "http://localhost:8080";
-
 export default function PopularCities() {
   const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(true);
@@ -27,12 +26,12 @@ export default function PopularCities() {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const { data } = await axios.get(`${BASE_URL}/api/properties`, {
+        const { data } = await axios.get(`${BE_URL}api/properties`, {
           params: { take: 500 },
           headers: { "Cache-Control": "no-store" },
         });
 
-        // fleksibel: bisa data.data atau data.items
+      
         const props: Property[] = Array.isArray(data?.data)
           ? data.data
           : Array.isArray(data?.items)

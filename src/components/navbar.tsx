@@ -57,13 +57,13 @@ export default function Navbar() {
                 href="/auth/signin"
                 className="px-4 py-2 rounded-2xl border-2 border-[#C53678] text-[#C53678] hover:bg-white transition"
               >
-                Sign In
+                SIGN IN
               </Link>
               <Link
                 href="/auth/signup"
                 className="px-4 py-2 rounded-2xl bg-[#C53678] text-white hover:bg-white hover:text-[#C53678] border-2 border-[#C53678] transition"
               >
-                Sign Up
+                SIGN UP
               </Link>
             </div>
           ) : (
@@ -78,30 +78,33 @@ export default function Navbar() {
                     href="/dashboard"
                     className="text-[#C53678] hover:underline"
                   >
-                    My Dashboard
+                    MY DASHBOARD
                   </Link>
                   <Link
                     href="/properties/create"
                     className="text-[#C53678] hover:underline"
                   >
-                    Create Properties
+                    CREATE PROPERTIES
                   </Link>
                 </>
               ) : (
-                <Link href="/rooms" className="text-[#C53678] hover:underline">
-                  Pilih Room
+                <Link
+                  href="/properties"
+                  className="text-[#C53678] hover:underline"
+                >
+                  GET ROOM
                 </Link>
               )}
 
               <Link href="/profile" className="text-[#C53678] hover:underline">
-                Profile
+                PROFILE
               </Link>
 
               <button
                 onClick={signOut}
                 className="px-4 py-2 rounded-2xl bg-red-500 text-white hover:bg-red-600 transition"
               >
-                Logout
+                LOGOUT
               </button>
             </div>
           )}
@@ -156,14 +159,14 @@ export default function Navbar() {
                       onClick={() => setOpenMenu(false)}
                       className="px-4 py-2 rounded-xl border-2 border-[#C53678] text-[#C53678] hover:bg-[#C53678] hover:text-white transition"
                     >
-                      Sign In
+                      SIGN IN
                     </Link>
                     <Link
                       href="/auth/signup"
                       onClick={() => setOpenMenu(false)}
                       className="px-4 py-2 rounded-xl bg-[#C53678] text-white hover:bg-white hover:text-[#C53678] border-2 border-[#C53678] transition"
                     >
-                      Sign Up
+                      SIGN UP
                     </Link>
                   </>
                 ) : (
@@ -175,23 +178,23 @@ export default function Navbar() {
                           onClick={() => setOpenMenu(false)}
                           className="text-[#C53678] font-medium hover:underline"
                         >
-                          My Dashboard
+                          MY DASHBOARD
                         </Link>
                         <Link
                           href="/properties/create"
                           onClick={() => setOpenMenu(false)}
                           className="text-[#C53678] font-medium hover:underline"
                         >
-                          Create Properties
+                          CREATE PROPERTIES
                         </Link>
                       </>
                     ) : (
                       <Link
-                        href="/rooms"
+                        href="/properties"
                         onClick={() => setOpenMenu(false)}
                         className="text-[#C53678] font-medium hover:underline"
                       >
-                        Pilih Room
+                        GET ROOM
                       </Link>
                     )}
 
@@ -200,7 +203,7 @@ export default function Navbar() {
                       onClick={() => setOpenMenu(false)}
                       className="text-[#C53678] font-medium hover:underline"
                     >
-                      Profile
+                      PROFILE
                     </Link>
 
                     <button
@@ -210,7 +213,7 @@ export default function Navbar() {
                       }}
                       className="mt-4 px-4 py-2 rounded-xl bg-red-500 text-white hover:bg-red-600 transition"
                     >
-                      Logout
+                      LOGOUT
                     </button>
                   </>
                 )}

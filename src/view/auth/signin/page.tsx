@@ -14,7 +14,7 @@ import {
   User,
   Building2,
 } from "lucide-react";
-import useAuthStore from "@/store/authstore"
+import useAuthStore from "@/store/authstore";
 import { UserRole } from "@/interface/auth.types";
 
 export default function SignInPageView() {

@@ -4,14 +4,12 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Mail, Loader2, CheckCircle, User, Building2 } from "lucide-react";
+import { Mail, Loader2, CheckCircle } from "lucide-react";
 import axios, { AxiosError } from "axios";
 import { BE_URL } from "@/configs/config";
-import { UserRole } from "@/interface/auth.types";
 
 export default function SignUpPageView() {
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState<UserRole | null>(null);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,25 +24,16 @@ export default function SignUpPageView() {
       return;
     }
 
-    if (!role) {
-      setError("Pilih role terlebih dahulu.");
-      return;
-    }
-
     try {
       setLoading(true);
 
-      // 1) Simpan role sementara untuk halaman complete-registration (FE)
-      sessionStorage.setItem("pendingRole", role);
-
-      // 2) Hit endpoint terbaru: hanya kirim { email }
-      await axios.post(`${BE_URL}/api/auth/register`, { email });
+      // endpoint hanya kirim email 
+      await axios.post(`${BE_URL}api/auth/register`, { email });
 
       setSuccess(
         "Berhasil! Silakan cek email untuk menyelesaikan pendaftaran."
       );
       setEmail("");
-      setRole(null);
     } catch (err) {
       const e = err as AxiosError<any>;
       if (e.response) {
@@ -60,7 +49,6 @@ export default function SignUpPageView() {
   };
 
   const handleGoogleLogin = () => {
-    // Sesuaikan kalau kamu sudah siapkan OAuth di backend
     window.location.href = `${BE_URL}/auth/google`;
   };
 
@@ -85,34 +73,6 @@ export default function SignUpPageView() {
         )}
 
         <form className="space-y-4" onSubmit={handleSignUp}>
-          {/* ROLE SELECTOR */}
-          <div className="mb-2 grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => setRole(UserRole.USER)}
-              className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm transition ${
-                role === UserRole.USER
-                  ? "bg-[#C53678] text-white border-[#C53678]"
-                  : "bg-white text-[#25171A] border-[#F2E3E7] hover:border-[#C53678]"
-              }`}
-            >
-              <User className="w-4 h-4" />
-              User
-            </button>
-            <button
-              type="button"
-              onClick={() => setRole(UserRole.TENANT)}
-              className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-2 text-sm transition ${
-                role === UserRole.TENANT
-                  ? "bg-[#C53678] text-white border-[#C53678]"
-                  : "bg-white text-[#25171A] border-[#F2E3E7] hover:border-[#C53678]"
-              }`}
-            >
-              <Building2 className="w-4 h-4" />
-              Owner Property
-            </button>
-          </div>
-
           {/* EMAIL */}
           <div className="relative">
             <Mail className="absolute left-3 top-3.5 h-5 w-5 text-gray-400" />
